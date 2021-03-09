@@ -1,0 +1,44 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.4.10"
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+def getTeamcityProperty(String propName) {
+    if (project.properties.containsKey(propName)) {
+        return project.properties[propName]
+    } else if (hasProperty(propName)) {
+        return teamcity[propName]
+    } else {
+        return "N/A"
+    }
+}
+
+
+
+task showProperties {
+    doLast {
+        println "build.number: " + getTeamcityProperty("build.number")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
